@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Lab 2 | COMP1073 Client-Side JavaScript</title>
+    <!-- <link href="styles.css" rel="stylesheet" /> -->
+    <style>
+        html {
+            font-family: sans-serif;
+            font-size: 200%;
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            transition-property: background-color;
+            transition-duration: 0.25s;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lab 2</h1>
+    <p>
+        This script will enable the user to adjust the below range input
+        elements to modify the
+        <abbr title="Red, Green, Blue">RGB</abbr> values of the
+        <code>background-color</code> CSS property of the HTML element.
+    </p>
+    <label for="red">Red</label>
+    <input id="red" type="range" min="0" max="255" value="0" />
+    <label for="green">Green</label>
+    <input id="green" type="range" min="0" max="255" value="0" />
+    <label for="blue">Blue</label>
+    <input id="blue" type="range" min="0" max="255" value="0" />
+
+    <script>
+        /* Declare and initialize global variables
+-------------------------------------------------- */
+        var pageBg = document.querySelector("html");
+        var sliders = document.getElementsByTagName("input");
+        var rgb = [0, 0, 0];
+
+        /* Handling events for range sliders 
+-------------------------------------------------- */
+        for (var i = 0; i < sliders.length; i++) {
+            // Iterating through range inputs and attaching oninput event listeners
+            sliders[i].onchange = function () {
+                // When a slider is moved, obtaining its id attribute value
+                var whichSlider = this.getAttribute("id");
+                // Also capturing the numerical value it's set to
+                var sliderValue = this.value;
+                // Calculating the updated RGB value and assigning it to a new variable
+                newRgb = changeRgb(whichSlider, sliderValue);
+                // Generating a new CSS background-color property string using the updated RGB values
+                var newCSS = writeCSS(newRgb);
+                // Applying the new CSS background color to the page
+                pageBg.style.backgroundColor = newCSS;
+            };
+        }
+        /* Declare and initialize global variables */
+        var pageBg = document.querySelector("html");
+        var sliders = document.getElementsByTagName("input");
+        var rgb = [0, 0, 0]; // Represents RGB values as an array
+
+        /* Event handlers for range sliders */
+        for (var i = 0; i < sliders.length; i++) {
+            sliders[i].oninput = function () { // Changed to oninput for real-time update
+                var whichSlider = this.getAttribute("id");
+                var sliderValue = this.value;
+                var newRgb = changeRgb(whichSlider, sliderValue); // Update RGB values
+                var newCSS = writeCSS(newRgb); // Generate CSS color string
+                pageBg.style.backgroundColor = newCSS; // Apply new background color
+            };
+        }
+
+        function changeRgb(channel, value) {
+            switch (channel) {
+                case 'red':
+                    rgb[0] = parseInt(value);
+                    break;
+                case 'green':
+                    rgb[1] = parseInt(value);
+                    break;
+                case 'blue':
+                    rgb[2] = parseInt(value);
+                    break;
+            }
+            return rgb;
+        }
+
+        function writeCSS(newRgb) {
+            var newColor = 'rgb(';
+            for (var i = 0; i < newRgb.length; i++) {
+                newColor += newRgb[i];
+                if (i < newRgb.length - 1) {
+                    newColor += ',';
+                }
+            }
+            newColor += ')';
+            return newColor;
+        }
+
+        // This page inspired by https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Return_values
+    </script>
+    </script>
+</body>
+
+</html>
